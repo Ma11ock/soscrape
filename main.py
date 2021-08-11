@@ -122,14 +122,6 @@ def get_questions():
     return jsonify(questions_data)
 
 
-# Get a random question.
-@app.get("/random/question")
-def get_rnd_question():
-    """
-    Get a random question.
-    """
-    return jsonify(random.choice(list(questions_data.values())))
-
 
 # Get a group of questions about a topic.
 @app.get("/question/<name>")
@@ -165,6 +157,19 @@ def get_question_num(name, number):
         print(msg, file=sys.stderr)
         return jsonify({"error": msg})
     return jsonify(questions_data[name][:num])
+
+# Get a random question.
+@app.get("/random/question")
+def get_rnd_question():
+    """
+    Get a random question.
+    """
+    if questions_data:
+        return jsonify(random.choice(list(questions_data.values())))
+    else:
+        return get_question("python")
+        
+
 
 
 if __name__ == "__main__":
